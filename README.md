@@ -33,11 +33,12 @@ Any questions or comments contact [Doug Morrison](mailto:doug.morrison@roboticvi
 
 ## Installation
 
-This code was developed with Python 3.6 on Ubuntu 16.04.  Python requirements can installed by:
+This code was developed with Python 3.8 on Ubuntu 20.04.  Python requirements can installed by:
 
 ```bash
 pip install -r requirements.txt
 ```
+numpy==1.21.6
 
 ## Datasets
 
