@@ -225,7 +225,7 @@ class GraspRectangle:
         """
         :return: Rectangle center point
         """
-        return self.points.mean(axis=0).astype(np.int)
+        return self.points.mean(axis=0).astype(int)
 
     @property
     def length(self):
@@ -313,7 +313,7 @@ class GraspRectangle:
             ]
         )
         c = np.array(center).reshape((1, 2))
-        self.points = ((np.dot(R, (self.points - c).T)).T + c).astype(np.int)
+        self.points = ((np.dot(R, (self.points - c).T)).T + c).astype(int)
 
     def scale(self, factor):
         """
@@ -345,7 +345,7 @@ class GraspRectangle:
             ]
         )
         c = np.array(center).reshape((1, 2))
-        self.points = ((np.dot(T, (self.points - c).T)).T + c).astype(np.int)
+        self.points = ((np.dot(T, (self.points - c).T)).T + c).astype(int)
 
 
 class Grasp:
@@ -379,7 +379,7 @@ class Grasp:
              [y2 + self.width/2 * xo, x2 + self.width/2 * yo],
              [y1 + self.width/2 * xo, x1 + self.width/2 * yo],
              ]
-        ).astype(np.float))
+        ).astype(float))
 
     def max_iou(self, grs):
         """

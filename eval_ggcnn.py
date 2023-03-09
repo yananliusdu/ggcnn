@@ -9,16 +9,23 @@ from utils.data import get_dataset
 
 logging.basicConfig(level=logging.INFO)
 
+# name_default = "jacquard"
+# model_path = 'models/ggcnn_weights_cornell/ggcnn_epoch_23_cornell'
+# evaluate_data_path = 'Jacquard_Samples/Samples'
+
+name_default = "cornell"
+model_path = 'models/ggcnn_weights_cornell/ggcnn_epoch_23_cornell'
+evaluate_data_path = 'archive'
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Evaluate GG-CNN')
 
     # Network
-    parser.add_argument('--network', type=str, help='Path to saved network to evaluate')
+    parser.add_argument('--network', type=str, help='Path to saved network to evaluate', nargs='?', const=1, default=model_path)
 
     # Dataset & Data & Training
-    parser.add_argument('--dataset', type=str, help='Dataset Name ("cornell" or "jaquard")')
-    parser.add_argument('--dataset-path', type=str, help='Path to dataset')
+    parser.add_argument('--dataset', type=str, default=name_default, help='Dataset Name ("cornell" or "jacquard")')
+    parser.add_argument('--dataset-path', type=str, help='Path to dataset', nargs='?', const=1, default=evaluate_data_path)
     parser.add_argument('--use-depth', type=int, default=1, help='Use Depth image for evaluation (1/0)')
     parser.add_argument('--use-rgb', type=int, default=0, help='Use RGB image for evaluation (0/1)')
     parser.add_argument('--augment', action='store_true', help='Whether data augmentation should be applied')
@@ -28,7 +35,7 @@ def parse_args():
     parser.add_argument('--num-workers', type=int, default=8, help='Dataset workers')
 
     parser.add_argument('--n-grasps', type=int, default=1, help='Number of grasps to consider per image')
-    parser.add_argument('--iou-eval', action='store_true', help='Compute success based on IoU metric.')
+    parser.add_argument('--iou-eval', action='store_false', help='Compute success based on IoU metric.')
     parser.add_argument('--jacquard-output', action='store_true', help='Jacquard-dataset style output')
     parser.add_argument('--vis', action='store_true', help='Visualise the network output')
 
@@ -50,6 +57,7 @@ if __name__ == '__main__':
     device = torch.device("cuda:0")
 
     # Load Dataset
+    test = print(args.dataset)
     logging.info('Loading {} Dataset...'.format(args.dataset.title()))
     Dataset = get_dataset(args.dataset)
     test_dataset = Dataset(args.dataset_path, start=args.split, end=1.0, ds_rotate=args.ds_rotate,

@@ -5,10 +5,11 @@ from imageio import imsave
 import argparse
 from utils.dataset_processing.image import DepthImage
 
+default_path = '/home/yanan/ggcnn/archive'
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generate depth images from Cornell PCD files.')
-    parser.add_argument('path', type=str, help='Path to Cornell Grasping Dataset')
+    parser.add_argument('path', type=str, help='Path to Cornell Grasping Dataset', nargs='?', const=1, default=default_path)
     args = parser.parse_args()
 
     pcds = glob.glob(os.path.join(args.path, '*', 'pcd*[0-9].txt'))
