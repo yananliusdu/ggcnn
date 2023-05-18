@@ -8,7 +8,7 @@ from utils.dataset_processing import evaluation, grasp
 from utils.data import get_dataset
 
 logging.basicConfig(level=logging.INFO)
-
+PYCHARM_DEBUG=True
 # name_default = "jacquard"
 # model_path = 'models/ggcnn_weights_cornell/ggcnn_epoch_23_cornell'
 # evaluate_data_path = 'Jacquard_Samples/Samples'
@@ -35,9 +35,9 @@ def parse_args():
     parser.add_argument('--num-workers', type=int, default=8, help='Dataset workers')
 
     parser.add_argument('--n-grasps', type=int, default=1, help='Number of grasps to consider per image')
-    parser.add_argument('--iou-eval', action='store_false', help='Compute success based on IoU metric.')
+    parser.add_argument('--iou-eval', action='store_true', help='Compute success based on IoU metric.')
     parser.add_argument('--jacquard-output', action='store_true', help='Jacquard-dataset style output')
-    parser.add_argument('--vis', action='store_true', help='Visualise the network output')
+    parser.add_argument('--vis', action='store_false', help='Visualise the network output')
 
     args = parser.parse_args()
 
@@ -83,7 +83,9 @@ if __name__ == '__main__':
             logging.info('Processing {}/{}'.format(idx+1, len(test_data)))
             xc = x.to(device)
             yc = [yi.to(device) for yi in y]
+            output = net(xc)
             lossd = net.compute_loss(xc, yc)
+
 
             q_img, ang_img, width_img = post_process_output(lossd['pred']['pos'], lossd['pred']['cos'],
                                                         lossd['pred']['sin'], lossd['pred']['width'])
@@ -102,6 +104,7 @@ if __name__ == '__main__':
                 grasps = grasp.detect_grasps(q_img, ang_img, width_img=width_img, no_grasps=1)
                 with open(jo_fn, 'a') as f:
                     for g in grasps:
+
                         f.write(test_data.dataset.get_jname(didx) + '\n')
                         f.write(g.to_jacquard(scale=1024 / 300) + '\n')
 

@@ -20,7 +20,7 @@ class CornellDataset(GraspDatasetBase):
         super(CornellDataset, self).__init__(**kwargs)
 
         graspf = glob.glob(os.path.join(file_path, '*', 'pcd*cpos.txt'))
-        graspf.sort()
+        # graspf.sort()
         l = len(graspf)
         if l == 0:
             raise FileNotFoundError('No dataset files found. Check path: {}'.format(file_path))
