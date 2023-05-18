@@ -23,6 +23,8 @@ from models.common import post_process_output
 
 logging.basicConfig(level=logging.INFO)
 
+bosch_obj_path = r'/home/yanan/grasp_annotation_tool/data/bosch_obj'
+cornell_path = r'/media/yanan/One Touch/ggcnn/archive'
 def parse_args():
     parser = argparse.ArgumentParser(description='Train GG-CNN')
 
@@ -30,8 +32,8 @@ def parse_args():
     parser.add_argument('--network', type=str, default='ggcnn', help='Network Name in .models')
 
     # Dataset & Data & Training
-    parser.add_argument('--dataset', type=str, help='Dataset Name ("cornell" or "jaquard")')
-    parser.add_argument('--dataset-path', type=str, help='Path to dataset')
+    parser.add_argument('--dataset', type=str, default="bosch", help='Dataset Name ("cornell" or "jaquard" or "bosch")')
+    parser.add_argument('--dataset-path', type=str, default=bosch_obj_path, help='Path to dataset')
     parser.add_argument('--use-depth', type=int, default=1, help='Use Depth image for training (1/0)')
     parser.add_argument('--use-rgb', type=int, default=0, help='Use RGB image for training (0/1)')
     parser.add_argument('--split', type=float, default=0.9, help='Fraction of data for training (remainder is validation)')
@@ -39,8 +41,8 @@ def parse_args():
                         help='Shift the start point of the dataset to use a different test/train split for cross validation.')
     parser.add_argument('--num-workers', type=int, default=8, help='Dataset workers')
 
-    parser.add_argument('--batch-size', type=int, default=8, help='Batch size')
-    parser.add_argument('--epochs', type=int, default=50, help='Training epochs')
+    parser.add_argument('--batch-size', type=int, default=1024, help='Batch size')
+    parser.add_argument('--epochs', type=int, default=30, help='Training epochs')
     parser.add_argument('--batches-per-epoch', type=int, default=1000, help='Batches per Epoch')
     parser.add_argument('--val-batches', type=int, default=250, help='Validation Batches')
 
@@ -143,6 +145,10 @@ def train(epoch, net, device, train_data, optimizer, batches_per_epoch, vis=Fals
 
             xc = x.to(device)
             yc = [yy.to(device) for yy in y]
+
+            # check the model forward inference output
+            # output = net(xc)
+
             lossd = net.compute_loss(xc, yc)
 
             loss = lossd['loss']
@@ -208,6 +214,7 @@ def run():
         shuffle=True,
         num_workers=args.num_workers
     )
+    print(train_dataset)
     val_dataset = Dataset(args.dataset_path, start=args.split, end=1.0, ds_rotate=args.ds_rotate,
                           random_rotate=True, random_zoom=True,
                           include_depth=args.use_depth, include_rgb=args.use_rgb)
