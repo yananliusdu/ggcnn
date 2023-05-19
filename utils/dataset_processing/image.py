@@ -203,7 +203,12 @@ class DepthImage(Image):
         """
         Normalise by subtracting the mean and clippint [-1, 1]
         """
-        self.img = np.clip((self.img - self.img.mean()), -1, 1)
+        # self.img = np.clip((self.img - self.img.mean()), -1, 1)
+
+        self.img = self.img.astype(np.float32)
+        self.img = (self.img - np.mean(self.img)) / np.std(self.img)  # Now, your data is standardized
+        self.img = self.img / np.max(np.abs(self.img))  # This scales data to [-1, 1]
+
 
 
 class WidthImage(Image):

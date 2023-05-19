@@ -1,10 +1,12 @@
 import torch.nn as nn
 import torch.nn.functional as F
+import torch
 
 filter_sizes = [32, 16, 8, 8, 16, 32]
 kernel_sizes = [9, 5, 3, 3, 5, 9]
 strides = [3, 2, 2, 2, 2, 3]
 
+torch.manual_seed(42)
 
 class GGCNN(nn.Module):
     """

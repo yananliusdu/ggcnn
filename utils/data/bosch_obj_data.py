@@ -61,20 +61,21 @@ class BoschDataset(GraspDatasetBase):
 
     def get_depth(self, idx, rot=0, zoom=1.0):
         depth_img = image.DepthImage.from_tiff(self.depth_files[idx])
+        # ori_img = depth_img.copy()
         center, left, top = self._get_crop_attrs(idx)
-        # depth_img.rotate(rot, center)
+        depth_img.rotate(rot, center)
         depth_img.crop((top, left), (min(480, top + self.output_size), min(640, left + self.output_size)))
-
-        # check single image
+        depth_img.normalise()
+        # nor_img = depth_img.copy()
+        # # check single image
         # fig, (ax1, ax2) = plt.subplots(1, 2)
-        # ax1.imshow(depth_img, cmap='gray')  # you can change the colormap (cmap) as needed
-        # depth_vis = depth_img.copy()
+        # ax1.imshow(ori_img, cmap='gray')  # you can change the colormap (cmap) as needed
         # # Display the array as an image
-        # ax2.imshow(depth_vis, cmap='gray')  # you can change the colormap (cmap) as needed
+        # ax2.imshow(nor_img, cmap='gray')  # you can change the colormap (cmap) as needed
         # # Show the plot
         # plt.show()
 
-        depth_img.normalise()
+
         depth_img.zoom(zoom)
         depth_img.resize((self.output_size, self.output_size))
         return depth_img.img

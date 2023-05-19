@@ -9,13 +9,20 @@ from utils.data import get_dataset
 
 logging.basicConfig(level=logging.INFO)
 PYCHARM_DEBUG=True
-# name_default = "jacquard"
-# model_path = 'models/ggcnn_weights_cornell/ggcnn_epoch_23_cornell'
-# evaluate_data_path = 'Jacquard_Samples/Samples'
 
-name_default = "cornell"
+# name_default = "bosch"
+# model_path = 'models/ggcnn_weights_bosch/epoch_28_iou_0.69'
+# evaluate_data_path = r'/home/yanan/grasp_annotation_tool/data/bosch_obj'
+
+
+name_default = "jacquard"
 model_path = 'models/ggcnn_weights_cornell/ggcnn_epoch_23_cornell'
-evaluate_data_path = 'archive'
+evaluate_data_path = 'Jacquard_Samples/Samples'
+
+# name_default = "cornell"
+# model_path = 'models/ggcnn_weights_cornell/ggcnn_epoch_23_cornell'
+# evaluate_data_path = 'archive'
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Evaluate GG-CNN')
@@ -24,7 +31,7 @@ def parse_args():
     parser.add_argument('--network', type=str, help='Path to saved network to evaluate', nargs='?', const=1, default=model_path)
 
     # Dataset & Data & Training
-    parser.add_argument('--dataset', type=str, default=name_default, help='Dataset Name ("cornell" or "jacquard")')
+    parser.add_argument('--dataset', type=str, default=name_default, help='Dataset Name ("cornell" or "jacquard" or "bosch")')
     parser.add_argument('--dataset-path', type=str, help='Path to dataset', nargs='?', const=1, default=evaluate_data_path)
     parser.add_argument('--use-depth', type=int, default=1, help='Use Depth image for evaluation (1/0)')
     parser.add_argument('--use-rgb', type=int, default=0, help='Use RGB image for evaluation (0/1)')
