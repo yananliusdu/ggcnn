@@ -1,3 +1,8 @@
+
+fork this for my own object grasping
+
+some bugs are found
+
 **Note:** This is a cleaned-up, PyTorch port of the GG-CNN code.  For the original Keras implementation, see the `RSS2018` branch.  
 Main changes are major code clean-ups and documentation, an improved GG-CNN2 model, ability to use the Jacquard dataset and simpler evaluation.    
 
